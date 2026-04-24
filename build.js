@@ -213,9 +213,9 @@ function buildPage(pageName) {
   if (fs.existsSync(componentsDir)) {
     const components = fs
       .readdirSync(componentsDir)
-      .filter((f) => f.endsWith(""));
+      .filter((f) => f.endsWith(".html"));
     components.forEach((comp) => {
-      const name = comp.replace("", "");
+      const name = comp.replace(".html", "");
       const marker = `{{${name}}}`;
       if (html.includes(marker)) {
         html = html.split(marker).join(getComponent(name));
@@ -331,17 +331,7 @@ minifyRecursively(distDir);
 if (pageToBuild === "all") {
   const pagesDir = path.join(__dirname, "pages");
   if (fs.existsSync(pagesDir)) {
-    fs.readdirSync(pagesDir).forEach((page) => {
-      // Skip known non-page directories
-      if (
-        page.startsWith("tel:") ||
-        page === "cdn-cgi" ||
-        page.startsWith("global-students")
-      ) {
-        return;
-      }
-      buildPage(page);
-    });
+    fs.readdirSync(pagesDir).forEach((page) => buildPage(page));
   }
 } else {
   buildPage(pageToBuild);
