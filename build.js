@@ -109,7 +109,7 @@ function copyDirectory(src, dest) {
 
 function buildPage(pageName) {
   console.log(`Building page: ${pageName}`);
-  const contentPath = path.join(__dirname, "pages", pageName, "content.html");
+  const contentPath = path.join(__dirname, "pages", pageName, "content");
   if (!fs.existsSync(contentPath)) return;
 
   let html = fs.readFileSync(contentPath, "utf8");
@@ -213,9 +213,9 @@ function buildPage(pageName) {
   if (fs.existsSync(componentsDir)) {
     const components = fs
       .readdirSync(componentsDir)
-      .filter((f) => f.endsWith(".html"));
+      .filter((f) => f.endsWith(""));
     components.forEach((comp) => {
-      const name = comp.replace(".html", "");
+      const name = comp.replace("", "");
       const marker = `{{${name}}}`;
       if (html.includes(marker)) {
         html = html.split(marker).join(getComponent(name));
