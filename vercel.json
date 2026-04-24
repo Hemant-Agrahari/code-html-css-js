@@ -3,8 +3,9 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/", "destination": "/dist/index.html" },
-    { "source": "/:path", "destination": "/dist/:path.html" },
+    { "source": "/:slug", "destination": "/dist/:slug.html" },
     { "source": "/assets/:path*", "destination": "/assets/:path*" },
-    { "source": "/dist/:path*", "destination": "/dist/:path*" }
+    { "source": "/css/:path*", "destination": "/css/:path*" },
+    { "source": "/js/:path*", "destination": "/js/:path*" }
   ]
 }
