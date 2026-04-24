@@ -1,77 +1,17 @@
 /* pages/home/home.css */
 
-/* Hero Section - Standardized Name */
-.home-banner {
+/* Hero Section */
+.hero-section {
     position: relative;
     padding: 50px 0;
     background: radial-gradient(98.75% 509.43% at 0px 10.41%, rgb(255, 255, 255) 0px, rgb(49, 160, 91) 100%), url("assets/hero-bg-2.webp") no-repeat right bottom;
     background-size: cover, 700px auto;
     background-position: left center, bottom right;
     background-blend-mode: normal, normal;
-    min-height: 700px;
+    min-height: 742px;
     display: flex;
     align-items: center;
     overflow: hidden;
-}
-
-/* Critical Bootstrap Grid Extraction (Inlined to prevent CLS) */
-.container {
-    width: 100%;
-    padding-right: 0.75rem;
-    padding-left: 0.75rem;
-    margin-right: auto;
-    margin-left: auto;
-}
-
-@media (min-width: 1200px) {
-    .container {
-        max-width: 1140px;
-    }
-}
-
-@media (min-width: 1400px) {
-    .container {
-        max-width: 1320px;
-    }
-}
-
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -0.75rem;
-    margin-left: -0.75rem;
-}
-
-.justify-content-between {
-    justify-content: space-between !important;
-}
-
-.col-lg-7,
-.col-lg-5,
-.col-md-6 {
-    position: relative;
-    width: 100%;
-    padding-right: 0.75rem;
-    padding-left: 0.75rem;
-}
-
-@media (min-width: 768px) {
-    .col-md-6 {
-        flex: 0 0 auto;
-        width: 50%;
-    }
-}
-
-@media (min-width: 992px) {
-    .col-lg-7 {
-        flex: 0 0 auto;
-        width: 58.33333333%;
-    }
-
-    .col-lg-5 {
-        flex: 0 0 auto;
-        width: 41.66666667%;
-    }
 }
 
 .hero-grid {

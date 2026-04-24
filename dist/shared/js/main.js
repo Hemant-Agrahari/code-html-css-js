@@ -118,9 +118,6 @@
       s.async = true;
       document.head.appendChild(s);
     });
-    document.querySelectorAll("iframe[data-src]").forEach((iframe) => {
-      iframe.setAttribute("src", iframe.getAttribute("data-src"));
-    });
   };
   const triggerEvents = [
     "touchstart",

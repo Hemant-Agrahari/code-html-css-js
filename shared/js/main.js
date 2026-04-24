@@ -146,11 +146,6 @@
       s.async = true;
       document.head.appendChild(s);
     });
-
-    // Lazy load iframes
-    document.querySelectorAll("iframe[data-src]").forEach((iframe) => {
-      iframe.setAttribute("src", iframe.getAttribute("data-src"));
-    });
   };
 
   // Trigger loading on interaction or after 3.5s delay

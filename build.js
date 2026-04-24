@@ -39,18 +39,9 @@ function injectImageOptimization($, yamlData) {
   // 2. Handle LCP Image (fetchpriority="high", loading="eager")
   if (yamlData.lcp_img) {
     const lcpSrcSnippet = yamlData.lcp_img;
-    const $lcpImg = $(`img[src*="${lcpSrcSnippet}"]`);
-    if ($lcpImg.length > 0) {
-      $lcpImg.attr("fetchpriority", "high");
-      $lcpImg.attr("loading", "eager");
-      $lcpImg.removeAttr("decoding");
-
-      // Inject preload for the ACTUAL src found
-      const actualSrc = $lcpImg.attr("src");
-      $("head").prepend(
-        `    <link rel="preload" as="image" href="${actualSrc}" fetchpriority="high" />\n`,
-      );
-    }
+    $(`img[src*="${lcpSrcSnippet}"]`).attr("fetchpriority", "high");
+    $(`img[src*="${lcpSrcSnippet}"]`).attr("loading", "eager");
+    $(`img[src*="${lcpSrcSnippet}"]`).removeAttr("decoding");
   }
 
   // 3. Handle LCP Background Preloads
@@ -70,51 +61,11 @@ function injectFontPreloads($) {
   if (fs.existsSync(fontsDir)) {
     const fonts = fs.readdirSync(fontsDir).filter((f) => f.endsWith(".woff2"));
     fonts.forEach((font) => {
-      // Use preconnect as well
       $("head").prepend(
         `    <link rel="preload" as="font" type="font/woff2" href="assets/fonts/${font}" crossorigin />\n`,
       );
     });
   }
-}
-
-function inlineCriticalCss($, pageName) {
-  const criticalFiles = ["shared/css/fonts.css", "shared/css/header.css"];
-  if (pageName === "home") {
-    criticalFiles.push("pages/home/home.css");
-  }
-
-  criticalFiles.forEach((file) => {
-    const filePath = path.join(__dirname, file);
-    if (fs.existsSync(filePath)) {
-      const css = fs.readFileSync(filePath, "utf8");
-      $("head").append(`    <style>${css}</style>\n`);
-
-      // Remove the link tag for the inlined file
-      $(`link[href="${file}"]`).remove();
-    }
-  });
-}
-
-function injectNonBlockingCss($) {
-  const criticalCss = [
-    "shared/css/fonts.css",
-    "shared/css/header.css",
-    "pages/home/home.css",
-  ];
-
-  $('link[rel="stylesheet"]').each((i, el) => {
-    const $link = $(el);
-    const href = $link.attr("href");
-
-    // Defer any CSS that is NOT in the critical list
-    if (href && !criticalCss.some((c) => href.includes(c))) {
-      const preloadLink = `
-    <link rel="preload" href="${href}" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="${href}"></noscript>`;
-      $link.replaceWith(preloadLink);
-    }
-  });
 }
 
 function minifyFile(filePath) {
@@ -313,21 +264,9 @@ function buildPage(pageName) {
 
   const $ = cheerio.load(html);
 
-  // Lazy load iframes
-  $("iframe").each((i, el) => {
-    const $iframe = $(el);
-    const src = $iframe.attr("src");
-    if (src) {
-      $iframe.attr("data-src", src);
-      $iframe.removeAttr("src");
-    }
-  });
-
   // Apply Phase Optimization
   injectImageOptimization($, yamlData);
   injectFontPreloads($);
-  inlineCriticalCss($, pageName);
-  injectNonBlockingCss($);
 
   const destName = pageName === "home" ? "index.html" : `${pageName}.html`;
   const distPath = path.join(distRootDir, destName);
