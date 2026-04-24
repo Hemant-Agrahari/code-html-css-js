@@ -109,7 +109,7 @@ function copyDirectory(src, dest) {
 
 function buildPage(pageName) {
   console.log(`Building page: ${pageName}`);
-  const contentPath = path.join(__dirname, "pages", pageName, "content");
+  const contentPath = path.join(__dirname, "pages", pageName, "content.html");
   if (!fs.existsSync(contentPath)) return;
 
   let html = fs.readFileSync(contentPath, "utf8");
@@ -331,7 +331,17 @@ minifyRecursively(distDir);
 if (pageToBuild === "all") {
   const pagesDir = path.join(__dirname, "pages");
   if (fs.existsSync(pagesDir)) {
-    fs.readdirSync(pagesDir).forEach((page) => buildPage(page));
+    fs.readdirSync(pagesDir).forEach((page) => {
+      // Skip known non-page directories
+      if (
+        page.startsWith("tel:") ||
+        page === "cdn-cgi" ||
+        page.startsWith("global-students")
+      ) {
+        return;
+      }
+      buildPage(page);
+    });
   }
 } else {
   buildPage(pageToBuild);
